@@ -16,14 +16,14 @@ socketReceiver.bind((my_ip,port)) #'binding' do socket
 os.system("clear")
 
 print("Qual maquina você quer conectar?")
-otherMachineName = input()
+otherMachineName = raw_input()
 next_in_ring = socket.gethostbyname(otherMachineName)
 
 print("A proxima máquina no anel é: " + otherMachineName + "(" + next_in_ring +")")
 while(True):
-	
+
 	print("Digite uma mensagem para enviar:")
-	message = input()
+	message = raw_input()
 	socketSender.sendto(message.encode(),(next_in_ring,port))
 
 	data,address = socketReceiver.recvfrom(1024)
