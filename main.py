@@ -1,16 +1,32 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+
 import socket
+import os
 
-def get_local_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        s.connect(('10.255.255.255', 1))
-        IP = s.getsockname()[0]
-    except:
-        IP = '127.0.0.1'
-    finally:
-        s.close()
-    return IP
+my_ip = socket.gethostbyname(socket.gethostname()) #pego nome da minha maquina, e dai pego o ip dela
+next_in_ring = ''
+port = 5000
 
-print "Endereco IP da sua maquina: ", get_local_ip()
+socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
+socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
+#é necessário ter dois sockets, pois o de recebimento sera 'binded' numa porta
 
-next_machine_ip = raw_input('Insira o IP da proxima maquina do anel: ')
+socketReceiver.bind((my_ip,port)) #'binding' do socket
+os.system("clear")
+
+print("Qual maquina você quer conectar?")
+otherMachineName = input()
+next_in_ring = socket.gethostbyname(otherMachineName)
+
+print("A proxima máquina no anel é: " + otherMachineName + "(" + next_in_ring +")")
+while(True):
+	
+	print("Digite uma mensagem para enviar:")
+	message = input()
+	socketSender.sendto(message.encode(),(next_in_ring,port))
+
+	data,address = socketReceiver.recvfrom(1024)
+	data = data.decode()
+	print("Recebido de " +  socket.gethostbyaddr(address[0])[0] + ":")
+	print(data)
