@@ -1,8 +1,15 @@
-#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
 import socket
 import os
+
+def packIp(ip):
+    a,b,c,d= list(map(int, ip.split('.')))
+    return (a, b, c, d)
+
+def unpackIp(a,b,c,d):
+    ip = [a,b,c,d]
+    return('.'.join(map(str,ip)))
 
 my_ip = socket.gethostbyname(socket.gethostname()) #pego nome da minha maquina, e dai pego o ip dela
 next_in_ring = ''
