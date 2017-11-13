@@ -50,4 +50,4 @@ while(True):
 	print(data.d)
 
 	time.sleep(1)
-	socketSender.sendto(data = pickle.dumps(data),(next_in_ring,port))
+	socketSender.sendto(pickle.dumps(data),(next_in_ring,port))
