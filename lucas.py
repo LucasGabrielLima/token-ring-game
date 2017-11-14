@@ -20,6 +20,15 @@ def getnextmachine():
 			machineName = raw_input()
 	return machineName
 
+def receive(socket):
+	try:
+		data, address = socket.recvfrom(1024)
+	except:
+		print('Ocorreu um timeout na conexão. Reinicie o jogo.')
+		sys.exit()
+	data = pickle.loads(data)
+	return data, address
+
 
 my_name = socket.gethostname()
 my_ip = socket.gethostbyname(my_name) #Pegando IP da máquina local
@@ -31,7 +40,7 @@ host = False
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
 socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
 socketReceiver.bind((my_ip, port))
-socketReceiver.settimeout(3) #set time out
+socketReceiver.settimeout(5) #set time out
 
 os.system("clear")
 
