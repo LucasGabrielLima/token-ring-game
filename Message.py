@@ -1,3 +1,4 @@
+import socket
 class create (object):
     start = "start"
     token = ""
