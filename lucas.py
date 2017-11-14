@@ -27,6 +27,10 @@ def receive():
 		print('Ocorreu um timeout na conexão. Reinicie o jogo.')
 		sys.exit()
 	data = pickle.loads(data)
+	if (data.start <> 'start'):
+		print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
+		sys.exit()
+		
 	return data, address
 
 def send(message):
