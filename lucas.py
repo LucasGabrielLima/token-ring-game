@@ -62,6 +62,7 @@ if(host):
 	#if(data.start == 'start'):
 else:
 	data, address = socketReceiver.recvfrom(1024)
+	data = pickle.loads(data)
 	print (address)
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 	print (mID)
