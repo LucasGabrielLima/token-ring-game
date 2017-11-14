@@ -8,32 +8,53 @@ import time
 import pickle
 import message
 
-my_ip = socket.gethostbyname(socket.gethostname()) #pego nome da minha maquina, e dai pego o ip dela
+def getnextmachine():
+	machineName = raw_input()
+	validHost = False
+	while validHost == False:
+		try:
+			test = socket.gethostbyname(machineName)
+			validHost = True
+		except:
+			print('Nome de máquina inválido. Insira o nome de uma máquina ligada na rede e veja se a máquina está ligada.')
+			machineName = raw_input()
+
+
+my_ip = socket.gethostbyname(socket.gethostname()) #Pegando IP da máquina local
 next_in_ring = ''
 port = 5000
 host = False
 
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
 socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
-#é necessário ter dois sockets, pois o de recebimento sera 'binded' numa porta
 
-socketReceiver.bind((my_ip,port)) #'binding' do socket
+
+socketReceiver.bind((my_ip, port))
 os.system("clear")
-
-print("Qual maquina você quer conectar?")
-otherMachineName = raw_input()
-next_in_ring = socket.gethostbyname(otherMachineName)
-
-
-print("A proxima máquina no anel é: " + otherMachineName + "(" + next_in_ring +")")
-massage= Message('d')
-picmessage = pickle.dumps(massage)
 
 if(len(sys.argv) > 1):
 	if(sys.argv[1] == 'h'):
 		print('Você é a primeira máquina da partida.')
 		host = True
-		socketSender.sendto(picmessage,(next_in_ring,port))
+	else:
+		print('Argumento inválido. Use h para iniciar em modo host.')
+		sys.exit()
+
+print("Qual máquina você quer conectar?")
+otherMachineName = getnextmachine()
+next_in_ring = socket.gethostbyname(otherMachineName)
+
+print("A proxima máquina no anel é: " + otherMachineName + "(" + next_in_ring +")")
+
+
+if(host):
+	socketSender.sendto(picmessage,(next_in_ring,port))
+
+	#Aguarda mensagem da última máquina
+	data, address = socketReceiver.recvfrom(1024)
+	data = pickle.loads(data)
+
+	#if(data.start == 'start'):
 
 
 while(True):
