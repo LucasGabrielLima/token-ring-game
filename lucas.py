@@ -20,7 +20,7 @@ def getnextmachine():
 			machineName = raw_input()
 	return machineName
 
-def receive(): #Recebimento não bloqueante com tratamento de Timeout
+def receive(): #Recebimento com tratamento de Timeout
 	try:
 		data, address = socketReceiver.recvfrom(1024)
 	except:
@@ -29,7 +29,7 @@ def receive(): #Recebimento não bloqueante com tratamento de Timeout
 
 	data = pickle.loads(data)
 
-	if (data.start <> 'start'):
+	if (data.start != 'start'):
 		print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
 		sys.exit()
 
@@ -80,7 +80,8 @@ print("A proxima máquina no anel é: " + next_name + "(" + next_ip +")")
 
 
 if(host):
-	message = Message.create(True, False, next_name, mID)
+	#Mensagem inicial
+	message = Message.create(False, True, next_name, mID)
 	send(message)
 
 	#Aguarda mensagem da última máquina
@@ -91,14 +92,35 @@ if(host):
 
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 
-	#if(data.start == 'start'):
+	#Envia segunda mensagem, para testar conexão do anel
+	message = Message.create(False, True, next_name, mID)
+	send(message)
+	data, address = receive()
+	if(data.control == True and data.x == mID):
+		print('O ID da sua máquina é: ', mID)
+	else
+		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
+		sys.exit()
+
 else:
+	#Primeira mensagem, seta o ID das máquinas e realiza conexão inicial do anel
 	data, address = receive()
 	print (address)
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
-	print (mID)
-	message = Message.create(True, False, next_name, mID)
-	send(message)
+	data.x += 1
+	send(data)
+
+	#Segunda mensagem, testa conexão do anel.
+	data, address = receive()
+	if(data.control == True and data.x == mID):
+		print('O ID da sua máquina é: ', mID)
+		data.x += 1
+		data.dest = next_name
+		send(data)
+	else
+		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
+		sys.exit()
+
 
 
 while(True):
