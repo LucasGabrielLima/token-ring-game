@@ -97,7 +97,7 @@ if(host):
 	send(message)
 	data, address = receive()
 	if(data.control == True and data.x == mID - 1):
-		print('O ID da sua máquina é: ', mID)
+		print('Configuração da conexão finalizada. O ID da sua máquina é: ', mID)
 	else:
 		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
 		sys.exit()
@@ -112,7 +112,6 @@ else:
 
 	#Segunda mensagem, testa conexão do anel.
 	data, address = receive()
-	print(data)
 	if(data.control == True and data.x == mID - 1):
 		print('O ID da sua máquina é: ', mID)
 		data.x += 1
