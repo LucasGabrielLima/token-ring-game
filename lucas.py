@@ -93,10 +93,10 @@ if(host):
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 
 	#Envia segunda mensagem, para testar conexão do anel
-	message = Message.create(False, True, next_name, mID)
+	message = Message.create(False, True, next_name, 0)
 	send(message)
 	data, address = receive()
-	if(data.control == True and data.x == mID):
+	if(data.control == True and data.x == mID - 1):
 		print('O ID da sua máquina é: ', mID)
 	else:
 		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
@@ -112,6 +112,7 @@ else:
 
 	#Segunda mensagem, testa conexão do anel.
 	data, address = receive()
+	print(data)
 	if(data.control == True and data.x == mID - 1):
 		print('O ID da sua máquina é: ', mID)
 		data.x += 1
