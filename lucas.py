@@ -30,9 +30,9 @@ host = False
 
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
 socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
-
-
 socketReceiver.bind((my_ip, port))
+socketReceiver.settimeout(3) #set time out
+
 os.system("clear")
 
 if(len(sys.argv) > 1):
