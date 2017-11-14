@@ -98,7 +98,7 @@ if(host):
 	data, address = receive()
 	if(data.control == True and data.x == mID):
 		print('O ID da sua máquina é: ', mID)
-	else
+	else:
 		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
 		sys.exit()
 
@@ -117,7 +117,7 @@ else:
 		data.x += 1
 		data.dest = next_name
 		send(data)
-	else
+	else:
 		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
 		sys.exit()
 
