@@ -1,4 +1,3 @@
-
 # -*- coding:utf-8 -*-
 
 import socket
@@ -6,7 +5,7 @@ import os
 import sys
 import time
 import pickle
-import Message
+import Game
 
 def getnextmachine():
 	machineName = raw_input()
@@ -79,9 +78,10 @@ print("A proxima máquina no anel é: " + next_name + "(" + next_ip +")")
 #############################
 
 
+####### ESTABELECE ANEL ###############
 if(host):
 	#Mensagem inicial
-	message = Message.create(False, True, next_name, mID)
+	message = Game.message(False, True, next_name, mID)
 	send(message)
 
 	#Aguarda mensagem da última máquina
@@ -93,7 +93,7 @@ if(host):
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 
 	#Envia segunda mensagem, para testar conexão do anel
-	message = Message.create(False, True, next_name, 0)
+	message = Game.message(False, True, next_name, 0)
 	send(message)
 	data, address = receive()
 	if(data.control == True and data.x == mID - 1):
@@ -121,6 +121,8 @@ else:
 		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
 		sys.exit()
 
+time.sleep(3)
+#######################################
 
 
 while(True):
