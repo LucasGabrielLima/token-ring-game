@@ -69,6 +69,11 @@ if(host):
 
 	#Aguarda mensagem da última máquina
 	data, address = receive()
+	if(data.x <> 3):
+		print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente')
+		sys.exit()
+		
+	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 
 	#if(data.start == 'start'):
 else:
