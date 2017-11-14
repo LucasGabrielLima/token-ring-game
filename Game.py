@@ -50,7 +50,7 @@ class create(object):
                 print('Insira coordenadas válidas.')
 
             #TODO Pode ser maior que 2. Ver orientação
-            if(x > 2 or y > 2):
+            if((x > 2 and orientation == 'h') or (y > 2 and orientation == 'v')):
                 print('São aceitos números inteiros de 0 a 2.')
 
             if(orientation == 'h'):
