@@ -1,4 +1,4 @@
-class Message (object):
+class create (object):
     start = "start"
     token = ""
     control = ""

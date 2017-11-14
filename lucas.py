@@ -6,7 +6,7 @@ import os
 import sys
 import time
 import pickle
-import message
+import Message
 
 def getnextmachine():
 	machineName = raw_input()
@@ -51,7 +51,7 @@ print("A proxima máquina no anel é: " + next_name + "(" + next_ip +")")
 
 
 if(host):
-	message = Message(True, False, next_name, mID)
+	message = Message.create(True, False, next_name, mID)
 	message = pickle.dumps(message)
 	socketSender.sendto(message, (next_ip, port))
 
@@ -65,7 +65,7 @@ else:
 	print (address)
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 	print (mID)
-	message = Message(True, False, next_name, mID)
+	message = Message.create(True, False, next_name, mID)
 	message = pickle.dumps(message)
 	socketSender.sendto(message, (next_ip, port))
 
