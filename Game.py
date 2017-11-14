@@ -30,13 +30,14 @@ class create(object):
         self.ship_count += 1
         self.printField()
 
+        print('Posicione o ' + str(self.ship_count) + 'o navio.')
         print('Insira sua orientação(v = vertical, h = horizontal): '),
         orientation = raw_input()
         while(orientation != 'v' and orientation != 'h'):
             print('Insira uma orientação válida: '),
             orientation = raw_input()
 
-        while(x > 2 or y > 2):
+        while(not validxy(x, y, orientation)):
             print('Insira sua coordenada inicial no eixo X:')
             x = raw_input()
             print('Insira sua coordenada inicial no eixo Y:')
@@ -49,9 +50,9 @@ class create(object):
             except:
                 print('Insira coordenadas válidas.')
 
-            #TODO Pode ser maior que 2. Ver orientação
-            if((x > 2 and orientation == 'h') or (y > 2 and orientation == 'v')):
-                print('São aceitos números inteiros de 0 a 2.')
+            if(not validxy(x, y, orientation)):
+                print('Coordenadas inválidas. Tente novamente.')
+                x, y = 5, 5
 
             if(orientation == 'h'):
                 for i in range(0, 3):
@@ -83,6 +84,9 @@ class create(object):
 
             print('')
             print('-------------------')
+
+def validxy(x, y, orientation):
+    return not((x > 2 and orientation == 'h') or (y > 2 and orientation == 'v'))
 
 game = create()
 print('Posicione o primeiro navio.')
