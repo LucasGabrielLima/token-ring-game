@@ -20,9 +20,9 @@ def getnextmachine():
 			machineName = raw_input()
 	return machineName
 
-def receive(socket):
+def receive():
 	try:
-		data, address = socket.recvfrom(1024)
+		data, address = socketReceiver.recvfrom(1024)
 	except:
 		print('Ocorreu um timeout na conexão. Reinicie o jogo.')
 		sys.exit()
@@ -44,7 +44,7 @@ host = False
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
 socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
 socketReceiver.bind((my_ip, port))
-socketReceiver.settimeout(5) #set time out
+#socketReceiver.settimeout(5) #set time out
 
 os.system("clear")
 
@@ -65,23 +65,19 @@ print("A proxima máquina no anel é: " + next_name + "(" + next_ip +")")
 
 if(host):
 	message = Message.create(True, False, next_name, mID)
-	message = pickle.dumps(message)
-	socketSender.sendto(message, (next_ip, port))
+	send(message)
 
 	#Aguarda mensagem da última máquina
-	data, address = socketReceiver.recvfrom(1024)
-	data = pickle.loads(data)
+	data, address = receive()
 
 	#if(data.start == 'start'):
 else:
-	data, address = socketReceiver.recvfrom(1024)
-	data = pickle.loads(data)
+	data, address = receive()
 	print (address)
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 	print (mID)
 	message = Message.create(True, False, next_name, mID)
-	message = pickle.dumps(message)
-	socketSender.sendto(message, (next_ip, port))
+	send(message)
 
 
 while(True):
