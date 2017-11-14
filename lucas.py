@@ -20,17 +20,19 @@ def getnextmachine():
 			machineName = raw_input()
 	return machineName
 
-def receive():
+def receive(): #Recebimento não bloqueante com tratamento de Timeout
 	try:
 		data, address = socketReceiver.recvfrom(1024)
 	except:
 		print('Ocorreu um timeout na conexão. Reinicie o jogo.')
 		sys.exit()
+
 	data = pickle.loads(data)
+
 	if (data.start <> 'start'):
 		print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
 		sys.exit()
-		
+
 	return data, address
 
 def send(message):
@@ -83,8 +85,8 @@ if(host):
 
 	#Aguarda mensagem da última máquina
 	data, address = receive()
-	if(data.x <> 3):
-		print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente')
+	if(data.x != 3):
+		print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente.')
 		sys.exit()
 
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
