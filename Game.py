@@ -48,6 +48,8 @@ class create(object):
 
             except:
                 print('Insira coordenadas válidas.')
+
+            #TODO Pode ser maior que 2. Ver orientação
             if(x > 2 or y > 2):
                 print('São aceitos números inteiros de 0 a 2.')
 
@@ -70,8 +72,8 @@ class create(object):
 
 
     def printField(self):
-        for x in range(0, 5):
-            for y in range(0, 5):
+        for y in range(0, 5):
+            for x in range(0, 5):
                 if(self.field[x][y] == 0):
                     print('|' + ' ' + '|'),
                 elif(self.field[x][y] > 0):
