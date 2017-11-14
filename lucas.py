@@ -29,6 +29,10 @@ def receive(socket):
 	data = pickle.loads(data)
 	return data, address
 
+def send(message):
+	message = pickle.dumps(message)
+	socketSender.sendto(message, (next_ip, port))
+
 
 my_name = socket.gethostname()
 my_ip = socket.gethostbyname(my_name) #Pegando IP da máquina local
