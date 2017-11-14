@@ -18,6 +18,7 @@ def getnextmachine():
 		except:
 			print('Nome de máquina inválido. Insira o nome de uma máquina ligada na rede e veja se a máquina está ligada.')
 			machineName = raw_input()
+	return machineName
 
 
 my_ip = socket.gethostbyname(socket.gethostname()) #Pegando IP da máquina local
