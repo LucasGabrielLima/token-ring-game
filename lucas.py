@@ -3,12 +3,15 @@
 
 import socket
 import os
+import sys
 import time
 import pickle
+import message
 
 my_ip = socket.gethostbyname(socket.gethostname()) #pego nome da minha maquina, e dai pego o ip dela
 next_in_ring = ''
 port = 5000
+host = False
 
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
 socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
@@ -21,22 +24,16 @@ print("Qual maquina você quer conectar?")
 otherMachineName = raw_input()
 next_in_ring = socket.gethostbyname(otherMachineName)
 
-class Message (object):
-	a = "a"
-	b = "b"
-	c = True
-	d = ""
-	def __init__ (self, d):
-		self.d = d
-
-
 
 print("A proxima máquina no anel é: " + otherMachineName + "(" + next_in_ring +")")
-message= Message('d')
-picmessage = pickle.dumps(message)
+massage= Message('d')
+picmessage = pickle.dumps(massage)
 
-if(raw_input() == 'a'):
-	socketSender.sendto(picmessage,(next_in_ring,port))
+if(len(sys.argv) > 1):
+	if(sys.argv[1] == 'h'):
+		print('Você é a primeira máquina da partida.')
+		host = True
+		socketSender.sendto(picmessage,(next_in_ring,port))
 
 
 while(True):
