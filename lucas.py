@@ -112,7 +112,7 @@ else:
 
 	#Segunda mensagem, testa conexão do anel.
 	data, address = receive()
-	if(data.control == True and data.x == mID):
+	if(data.control == True and data.x == mID - 1):
 		print('O ID da sua máquina é: ', mID)
 		data.x += 1
 		data.dest = next_name
