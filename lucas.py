@@ -33,6 +33,7 @@ def send(message):
 	message = pickle.dumps(message)
 	socketSender.sendto(message, (next_ip, port))
 
+###### CONFIGURAÇÃO DOS SOCKETS #######
 
 my_name = socket.gethostname()
 my_ip = socket.gethostbyname(my_name) #Pegando IP da máquina local
@@ -46,8 +47,11 @@ socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para r
 socketReceiver.bind((my_ip, port))
 #socketReceiver.settimeout(5) #set time out
 
+######################################
+
 os.system("clear")
 
+###### TRATA ARGUMENTOS ##########
 if(len(sys.argv) > 1):
 	if(sys.argv[1] == 'h'):
 		print('Você é a primeira máquina da partida.')
@@ -56,11 +60,17 @@ if(len(sys.argv) > 1):
 		print('Argumento inválido. Use h para iniciar em modo host.')
 		sys.exit()
 
+###########################
+
+###### CONEXÃO COM OUTRAS MÁQUINAS; CONFIGURAÇÃO DO ANEL ##########
+
 print("Qual máquina você quer conectar?")
 next_name = getnextmachine()
 next_ip = socket.gethostbyname(next_name)
 
 print("A proxima máquina no anel é: " + next_name + "(" + next_ip +")")
+
+#############################
 
 
 if(host):
@@ -72,7 +82,7 @@ if(host):
 	if(data.x <> 3):
 		print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente')
 		sys.exit()
-		
+
 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
 
 	#if(data.start == 'start'):
