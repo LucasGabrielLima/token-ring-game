@@ -19,6 +19,14 @@ def getnextmachine():
 			machineName = raw_input()
 	return machineName
 
+def initPlayers():
+	for i in range(num_players):
+		if(i + 1 != mID):
+			field = game.enemyField
+			player = Game.player(field, i+1)
+			game.players.append(player)
+
+
 def receive(): #Recebimento com tratamento de Timeout
 	try:
 		data, address = socketReceiver.recvfrom(1024)
@@ -33,7 +41,6 @@ def receive(): #Recebimento com tratamento de Timeout
 			print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
 			sys.exit()
 	except:
-			print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
 			sys.exit()
 
 	return data, address
@@ -71,6 +78,7 @@ if(len(sys.argv) > 1):
 		sys.exit()
 
 ###########################
+
 
 ###### CONEXÃO COM OUTRAS MÁQUINAS; CONFIGURAÇÃO DO ANEL ##########
 
@@ -135,6 +143,9 @@ game = Game.create()
 #Configura posição dos dois navios
 game.createShip()
 game.createShip()
+game.printField()
+print('Navios posicionados com sucesso.')
+
 #######################
 
 while(True):

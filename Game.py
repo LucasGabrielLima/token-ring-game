@@ -19,7 +19,7 @@ class message (object):
 class create(object):
     def __init__(self):
         self.field = [[0 for x in range(5)] for y in range(5)] # Inicializa uma matriz 5x5, preenchida com 0s
-        self.players = {}
+        self.players = []
         self.kills = 0
         self.ship_count = 0
 
@@ -86,20 +86,30 @@ class create(object):
                         self.field[x][y + i] = self.ship_count
 
 
+    def enemyField():
+        field = [[0 for x in range(5)] for y in range(5)] # Inicializa uma matriz 5x5, preenchida com 0s
+        return field
 
-
-    def printField(self):
+    def printField(self, field = 'default'):
+        if(field == 'default'):
+            field = self.field
         for y in range(0, 5):
             for x in range(0, 5):
-                if(self.field[x][y] == 0):
+                if(field[x][y] == 0):
                     print('|' + ' ' + '|'),
-                elif(self.field[x][y] > 0):
-                    print('|' + str(self.field[x][y]) + '|'),
+                elif(field[x][y] > 0):
+                    print('|' + str(field[x][y]) + '|'),
                 else:
                     print('|' + 'X' + '|'),
 
             print('')
             print('-------------------')
+
+class player(object):
+    def __init__(self, field, mID):
+        self.field = field
+        self.id = mID
+        self.ships = 2
 
 def validxy(x, y, orientation):
     return not((x > 2 and orientation == 'h') or (y > 2 and orientation == 'v'))
