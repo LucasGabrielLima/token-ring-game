@@ -3,7 +3,7 @@ import socket
 import os
 
 class message (object):
-    def __init__(self, token, control, dest, x = "", y = "", orientation = 'v'):
+    def __init__(self, token, control, dest, x = "", y = ""):
         self.start = "start"
         self.token = token
         self.control = control

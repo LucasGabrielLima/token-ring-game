@@ -30,6 +30,44 @@ def initPlayers():
 			player = Game.player(field, i+1)
 			game.players.append(player)
 
+def validxy(x, y):
+    return (x < 5 and y < 5)
+
+def makePlay():
+	print('Qual o ID do jogador que você quer atacar?')
+	validID = False
+	while(validID = False)
+	player = raw_input()
+	try:
+		player = int(player)
+		validID = True
+		if(player == mID):
+			print("Tá tudo bem? Você não pode atacar a si mesmo :(")
+			validID = False
+		elif(player > num_players):
+			print("Não há nenhum jogador com este ID.")
+			validID = False
+	except:
+		print('Insira um ID válido. São aceitos números entre 1 e ' + str(num_players))
+
+
+	x, y = 5, 5
+	while(not validxy(x, y)):
+		print('Insira a coordenada de ataque no eixo X:')
+		x = raw_input()
+		print('Insira a coordenada de ataque no eixo Y:')
+		y = raw_input()
+
+		try:
+			x = int(x)
+			y = int(y)
+
+		except:
+			print('Insira coordenadas válidas.')
+
+	play = Game.message(False, False, player, x, y)
+	send(play)
+
 
 def receive(): #Recebimento com tratamento de Timeout
 	try:
