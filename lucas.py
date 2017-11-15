@@ -66,7 +66,7 @@ def makePlay():
 			print('Insira coordenadas válidas.')
 
 	play = Game.message(False, False, player, x, y)
-	send(play)
+	return play
 
 
 def receive(): #Recebimento com tratamento de Timeout
@@ -90,6 +90,39 @@ def receive(): #Recebimento com tratamento de Timeout
 def send(message):
 	message = pickle.dumps(message)
 	socketSender.sendto(message, (next_ip, port))
+
+def sendToken(token):
+	send(token)
+	has_token = False
+
+def getPlayerByID(mID):
+	for i in range(len(game.players))
+		if(game.players[i].mID == mID)
+			return i
+
+def checkForHit(play):
+	if(play.hit == True)
+		print('Você atingiu um navio!')
+		game.players[getPlayerByID(play.dest)].field[play.x][play.y] = -1
+	else:
+		print('Água! Você errou :(')
+
+
+def sendPlay(play):
+	send(play)
+
+	play, address = receive()
+	i = 0
+	while(play.seen == False and i < 3):
+		send(play)
+		i += 1
+		play, address = receive()
+
+	if(play.seen == False)
+		print('Ocorreu um erro na conexão. Reinicie o jogo.')
+		sys.exit()
+
+	checkForHit(play)
 
 ###### CONFIGURAÇÃO DOS SOCKETS #######
 
@@ -203,7 +236,6 @@ if(host):
 	has_token = True
 	play = makePlay()
 	sendPlay(play)
-	checkPlay()
 	sendToken(token)
 
 
