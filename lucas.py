@@ -110,7 +110,7 @@ def checkForHit(play):
 		return False
 
 def checkForKill(play):
-	if(play.kill == True):
+	if(play.kill == True and play.origin == my_name):
 		orientation = play.orientation
 		x = play.x
 		y = play.y
@@ -255,14 +255,12 @@ if(host):
 ###################
 
 while(True):
-
-	data,address = socketReceiver.recvfrom(1024)
-	data = pickle.loads(data)
-	print("Recebido de " +  socket.gethostbyaddr(address[0])[0] + ":")
-	print(data.a)
-	print(data.b)
-	print(data.c)
-	print(data.d)
-
-	time.sleep(1)
-	socketSender.sendto(pickle.dumps(data),(next_ip,port))
+	data, address = receive()
+	if(data.dest == mID or data.dest == 'all'):
+		if(data.token):
+			has_token = True
+			play = makePlay()
+			sendPlay(play)
+			sendToken(token)
+	else: # Se a mensagem não for pra mim, manda pra frente
+		send(data)
