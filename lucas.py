@@ -50,6 +50,7 @@ mID = 0 # machine ID
 next_in_ring = ''
 port = 5000
 host = False
+num_players = 3
 
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
 socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
@@ -90,7 +91,7 @@ if(host):
 
 	#Aguarda mensagem da última máquina
 	data, address = receive()
-	if(data.x != 3):
+	if(data.x != num_players - 1):
 		print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente.')
 		sys.exit()
 
