@@ -152,7 +152,6 @@ print('Navios posicionados com sucesso.')
 
 initPlayers()
 print('Campos dos jogadores adversários:')
-print(game.players[0].field)
 game.printField(game.players[0].field)
 game.printField(game.players[1].field)
 game.printField(game.players[2].field)
