@@ -19,7 +19,7 @@ class message (object):
 class create(object):
     def __init__(self):
         self.field = [[0 for x in range(5)] for y in range(5)] # Inicializa uma matriz 5x5, preenchida com 0s
-        self.players = ''
+        self.players = {}
         self.kills = 0
         self.ship_count = 0
 
@@ -103,10 +103,3 @@ class create(object):
 
 def validxy(x, y, orientation):
     return not((x > 2 and orientation == 'h') or (y > 2 and orientation == 'v'))
-
-game = create()
-print('Posicione o primeiro navio.')
-game.createShip()
-print('Posicione o segundo navio.')
-game.createShip()
-game.printField()
