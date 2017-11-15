@@ -105,7 +105,7 @@ class create(object):
 class player(object):
     def __init__(self, field, mID):
         self.field = field
-        self.id = mID
+        self.mID = mID
         self.ships = 2
 
 def validxy(x, y, orientation):

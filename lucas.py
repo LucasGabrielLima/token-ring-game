@@ -36,19 +36,19 @@ def validxy(x, y):
 def makePlay():
 	print('Qual o ID do jogador que você quer atacar?')
 	validID = False
-	while(validID = False)
-	player = raw_input()
-	try:
-		player = int(player)
-		validID = True
-		if(player == mID):
-			print("Tá tudo bem? Você não pode atacar a si mesmo :(")
-			validID = False
-		elif(player > num_players):
-			print("Não há nenhum jogador com este ID.")
-			validID = False
-	except:
-		print('Insira um ID válido. São aceitos números entre 1 e ' + str(num_players))
+	while(validID == False):
+		player = raw_input()
+		try:
+			player = int(player)
+			validID = True
+			if(player == mID):
+				print("Tá tudo bem? Você não pode atacar a si mesmo :(")
+				validID = False
+			elif(player > num_players):
+				print("Não há nenhum jogador com este ID.")
+				validID = False
+		except:
+			print('Insira um ID válido. São aceitos números entre 1 e ' + str(num_players))
 
 
 	x, y = 5, 5
@@ -189,12 +189,13 @@ game.printField()
 print('Navios posicionados com sucesso.')
 
 initPlayers()
-print('Campos dos jogadores adversários:')
-game.printField(game.players[0].field)
-game.printField(game.players[1].field)
-game.printField(game.players[2].field)
+for i in range(len(game.players)):
+	print('Jogador ' + str(game.players[i].mID) + ':')
+	game.printField(game.players[i].field)
 
 #######################
+
+#TODO: Criar token se for host
 
 while(True):
 
