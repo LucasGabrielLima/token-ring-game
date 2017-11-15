@@ -21,6 +21,8 @@ class create(object):
         self.field = [[0 for x in range(5)] for y in range(5)] # Inicializa uma matriz 5x5, preenchida com 0s
         self.players = []
         self.kills = 0
+        self.ship1_lives = 3
+        self.ship2_lives = 3
         self.ship_count = 0
 
     def createShip(self):

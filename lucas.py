@@ -109,6 +109,16 @@ def checkForHit(play):
 		print('Água! Você errou :(')
 		return False
 
+def checkForKill(play):
+	if(play.kill == True):
+		orientation = play.orientation
+		x = play.x
+		y = play.y
+		message = Game.message(False, True, 'all', x, y) #Envia mensagem a todos os jogadores informando a morte de um navio
+		message.orientation = orientation
+		message.mID = play.dest
+		message.kill = True
+		send(message)
 
 def sendPlay(play):
 	send(play)
