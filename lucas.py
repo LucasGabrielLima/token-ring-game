@@ -114,6 +114,15 @@ def checkForKill(play):
 		orientation = play.orientation
 		x = play.x
 		y = play.y
+
+	    if(orientation == 'h'):
+            for i in range(0, 3):
+                game.players[getPlayerByID(play.dest)].field[x + i][y] = -1
+
+        else:
+            for i in range(0, 3):
+                game.players[getPlayerByID(play.dest)].field[x][y + i] = -1
+
 		message = Game.message(False, True, 'all', x, y) #Envia mensagem a todos os jogadores informando a morte de um navio
 		message.orientation = orientation
 		message.mID = play.dest
@@ -135,7 +144,7 @@ def sendPlay(play):
 		sys.exit()
 
 	checkForHit(play)
-	#checkForKill(play)
+	checkForKill(play)
 
 ###### CONFIGURAÇÃO DOS SOCKETS #######
 
@@ -251,7 +260,6 @@ if(host):
 	sendPlay(play)
 	sendToken(token)
 
-
 ###################
 
 while(True):
@@ -262,5 +270,9 @@ while(True):
 			play = makePlay()
 			sendPlay(play)
 			sendToken(token)
+
+		elif(data.control and data.kill):
+
+
 	else: # Se a mensagem não for pra mim, manda pra frente
 		send(data)
