@@ -50,24 +50,40 @@ class create(object):
             except:
                 print('Insira coordenadas válidas.')
 
-            if(not validxy(x, y, orientation)):
-                print('Coordenadas inválidas. Tente novamente.')
-                x, y = 5, 5
 
             if(orientation == 'h'):
-                for i in range(0, 3):
-                    if(self.field[x + i][y] == 0):
+                inbounds = True
+                try:
+                    for i in range (0, 3):
+                        if(self.field[x + i][y] != 0):
+                            print('Já há um navio ocupando essa posição. Insira as coordenadas novamente.')
+                            inbounds = False
+                            x, y = 5, 5
+                except:
+                    print('Coordenadas inválidas. Tente novamente.')
+                    inbounds = False
+                    x, y = 5, 5
+
+                if(inbounds):
+                    for i in range(0, 3):
                         self.field[x + i][y] = self.ship_count
-                    else:
-                        print('Já há um navio ocupando essa posição. Insira as coordenadas novamente.')
-                        x, y = 5, 5
+
             else:
-                for i in range(0, 3):
-                    if(self.field[x][y + i] == 0):
+                inbounds = True
+                try:
+                    for i in range (0, 3):
+                        if(self.field[x][y + i] != 0):
+                            print('Já há um navio ocupando essa posição. Insira as coordenadas novamente.')
+                            inbounds = False
+                            x, y = 5, 5
+                except:
+                    print('Coordenadas inválidas. Tente novamente.')
+                    inbounds = False
+                    x, y = 5, 5
+
+                if(inbounds):
+                    for i in range(0, 3):
                         self.field[x][y + i] = self.ship_count
-                    else:
-                        print('Já há um navio ocupando essa posição. Insira as coordenadas novamente.')
-                        x, y = 5, 5
 
 
 
