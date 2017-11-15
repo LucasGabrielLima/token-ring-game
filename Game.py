@@ -86,19 +86,15 @@ class create(object):
                         self.field[x][y + i] = self.ship_count
 
 
-    def enemyField():
-        field = [[0 for x in range(5)] for y in range(5)] # Inicializa uma matriz 5x5, preenchida com 0s
-        return field
-
-    def printField(self, field = 'default'):
-        if(field == 'default'):
-            field = self.field
+    def printField(self, f = 'default'):
+        if(f == 'default'):
+            f = self.field
         for y in range(0, 5):
             for x in range(0, 5):
-                if(field[x][y] == 0):
+                if(f[x][y] == 0):
                     print('|' + ' ' + '|'),
-                elif(field[x][y] > 0):
-                    print('|' + str(field[x][y]) + '|'),
+                elif(f[x][y] > 0):
+                    print('|' + str(f[x][y]) + '|'),
                 else:
                     print('|' + 'X' + '|'),
 
