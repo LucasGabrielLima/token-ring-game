@@ -28,9 +28,13 @@ def receive(): #Recebimento com tratamento de Timeout
 
 	data = pickle.loads(data)
 
-	if (data.start != 'start'):
-		print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
-		sys.exit()
+	try:
+		if (data.start != 'start'):
+			print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
+			sys.exit()
+	except:
+			print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
+			sys.exit()
 
 	return data, address
 
@@ -124,6 +128,13 @@ else:
 time.sleep(3)
 #######################################
 
+######### CONFIGURAÇÃO INICIAL DO JOGO####
+game = Game.create()
+
+#Configura posição dos dois navios
+game.createShip()
+game.createShip()
+#######################
 
 while(True):
 
