@@ -100,6 +100,7 @@ next_in_ring = ''
 port = 5000
 host = False
 num_players = 3
+has_token = False
 
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
 socketReceiver = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para receber dados
@@ -189,13 +190,24 @@ game.printField()
 print('Navios posicionados com sucesso.')
 
 initPlayers()
+print('Campos adversários:')
 for i in range(len(game.players)):
 	print('Jogador ' + str(game.players[i].mID) + ':')
 	game.printField(game.players[i].field)
 
 #######################
 
-#TODO: Criar token se for host
+#######CRIA TOKEN E PRIMEIRA JOGADA##########
+if(host):
+	token = Game.message(True, False, 'all')
+	has_token = True
+	play = makePlay()
+	sendPlay(play)
+	checkPlay()
+	sendToken(token)
+
+
+###################
 
 while(True):
 
