@@ -191,7 +191,7 @@ def attacked(play):
         else:
             game.ship2_lives -= 1
             if(game.ship2_lives == 0):
-                print('O navio' + str(ship) + ' foi destrido')
+                print('O navio ' + str(ship) + ' foi destruido')
                 game.ship_count -= 1
                 play.kill = True
                 play.orientation = game.ship2_orientation
