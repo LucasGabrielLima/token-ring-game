@@ -115,6 +115,7 @@ def checkForKill(play):
     if(play.kill == True and play.origin == my_name):
         print('Você destruiu um navio do jogador adversário!!!')
         orientation = play.orientation
+        dest = play.dest
         x = play.x
         y = play.y
         game.players[getPlayerByID(play.dest)].ships -= 1
@@ -142,6 +143,7 @@ def checkForKill(play):
 
         message = Game.message(False, True, 'all', x, y) #Envia mensagem a todos os jogadores informando a morte de um navio
         message.orientation = orientation
+        message.player = dest
         message.mID = play.dest
         message.kill = True
         send(message)
@@ -340,9 +342,9 @@ while(True):
             orientation = data.orientation
             x = data.x
             y = data.y
-            game.players[getPlayerByID(data.dest)].ships_count -= 1
+            game.players[getPlayerByID(data.player)].ships_count -= 1
 
-            if(game.players[getPlayerByID(data.dest)].ships_count == 0):
+            if(game.players[getPlayerByID(data.player)].ships_count == 0):
                 game.players_left -= 1
                 if(game.players_left == 0):
                     print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
@@ -351,11 +353,11 @@ while(True):
 
             if(orientation == 'h'):
                 for i in range(0, 3):
-                    game.players[getPlayerByID(data.dest)].field[x + i][y] = -1
+                    game.players[getPlayerByID(data.player)].field[x + i][y] = -1
 
             else:
                 for i in range(0, 3):
-                    game.players[getPlayerByID(data.dest)].field[x][y + i] = -1 
+                    game.players[getPlayerByID(data.player)].field[x][y + i] = -1 
 
             send(data)
 
