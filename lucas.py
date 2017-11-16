@@ -98,7 +98,7 @@ def sendToken(token):
     has_token = False
 
 def getPlayerByID(mID):
-    for i in range(len(game.players)):
+    for i in range(1, len(game.players) + 1):
         if(game.players[i].mID == mID):
             return i
 
@@ -179,7 +179,7 @@ def attacked(play):
         if(ship == 1):
             game.ship1_lives -= 1
             if(game.ship1_lives == 0):
-                print('O navio' + str(ship) + ' foi destrido')
+                print('O navio ' + str(ship) + ' foi destrido')
                 game.ship_count -= 1
                 play.kill = True
                 play.orientation = game.ship1_orientation
