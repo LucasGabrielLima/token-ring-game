@@ -13,7 +13,6 @@ class message (object):
         self.y = y
         self.seen = False
         self.hit = False
-        self.miss = False
         self.kill = False
 
 class create(object):

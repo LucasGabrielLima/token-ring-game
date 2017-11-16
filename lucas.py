@@ -147,6 +147,16 @@ def sendPlay(play):
 	checkForHit(play)
 	checkForKill(play)
 
+def attacked(play):
+	play.seen = True
+	x = play.x
+	y = play.y
+
+	if(game.field[x][y] > 0):
+		play.hit = True
+		game.field[x][y] = -1
+
+
 ###### CONFIGURAÇÃO DOS SOCKETS #######
 
 my_name = socket.gethostname()
@@ -267,12 +277,14 @@ if(host):
 while(True):
 	data, address = receive()
 	if(data.dest == mID or data.dest == 'all'):
+		#If message is token
 		if(data.token):
 			has_token = True
 			play = makePlay()
 			sendPlay(play)
 			sendToken(token)
 
+		#If message is a kill broadcast
 		elif(data.control and data.kill):
 			orientation = data.orientation
 			x = data.x
@@ -288,6 +300,11 @@ while(True):
 	                game.players[getPlayerByID(data.dest)].field[x][y + i] = -1	
 
 	        send(data)
+
+	    #If message is an atack
+	   	else:
+	   		attacked(data)
+	   		send(data)
 
 
 	else: # Se a mensagem não for pra mim, manda pra frente
