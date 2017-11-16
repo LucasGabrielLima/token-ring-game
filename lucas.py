@@ -46,7 +46,7 @@ def makePlay():
             if(player == mID):
                 print("Tá tudo bem? Você não pode atacar a si mesmo :(")
                 validID = False
-            elif(player > num_players):
+            elif(player > num_players or player < 1):
                 print("Não há nenhum jogador com este ID.")
                 validID = False
         except:
@@ -98,7 +98,7 @@ def sendToken(token):
     has_token = False
 
 def getPlayerByID(mID):
-    for i in range(1, len(game.players) + 1):
+    for i in range(len(game.players)):
         if(game.players[i].mID == mID):
             return i
 
