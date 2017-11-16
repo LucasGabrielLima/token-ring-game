@@ -133,7 +133,7 @@ def checkForKill(play):
             for i in range(0, 3):
                 game.players[getPlayerByID(play.dest)].field[x + i][y] = -1
 
-        else:
+        elif(orientation == 'v'):
             for i in range(0, 3):
                 game.players[getPlayerByID(play.dest)].field[x][y + i] = -1
 
@@ -181,6 +181,8 @@ def attacked(play):
                 game.ship_count -= 1
                 play.kill = True
                 play.orientation = game.ship1_orientation
+                play.x = game.ship1x
+                play.y = game.ship1y
 
                 if(game.ship_count == 0):
                     print('Seus navios foram destruídos. Você for eliminado :(')
@@ -193,6 +195,8 @@ def attacked(play):
                 game.ship_count -= 1
                 play.kill = True
                 play.orientation = game.ship2_orientation
+                play.x = game.ship2x
+                play.y = game.ship2y
 
 
                 if(game.ship_count == 0):
