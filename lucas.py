@@ -24,11 +24,13 @@ def initField():
     return field
 
 def initPlayers():
+    game.players_left = 0
     for i in range(num_players):
         if(i + 1 != mID):
             field = initField()
             player = Game.player(field, i+1)
             game.players.append(player)
+            game.players_left += 1
 
 def validxy(x, y):
     return (x < 5 and y < 5)
@@ -111,10 +113,18 @@ def checkForHit(play):
 
 def checkForKill(play):
     if(play.kill == True and play.origin == my_name):
+        print('Você destruiu um navio do jogador adversário!!!')
         orientation = play.orientation
         x = play.x
         y = play.y
         game.players[getPlayerByID(play.dest)].ships -= 1
+
+        if(game.players[getPlayerByID(play.dest)].ships == 0):
+            game.players_left -= 1
+            if(game.players_left == 0):
+                print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
+                time.sleep(3)
+                exit()
 
         if(orientation == 'h'):
             for i in range(0, 3):
@@ -123,6 +133,12 @@ def checkForKill(play):
         else:
             for i in range(0, 3):
                 game.players[getPlayerByID(play.dest)].field[x][y + i] = -1
+
+        game.players_left -= 1
+        if(game.players_left == 0):
+            print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
+            time.sleep(3)
+            exit()
 
         message = Game.message(False, True, 'all', x, y) #Envia mensagem a todos os jogadores informando a morte de um navio
         message.orientation = orientation
@@ -152,9 +168,39 @@ def attacked(play):
     x = play.x
     y = play.y
 
+    print('Você foi atacado na posição (' + str(x) + ', ' + str(y) + ').')
+
     if(game.field[x][y] > 0):
+        ship = game.field[x][y]
+        print('O navio ' + str(ship) + ' foi atingido.')
         play.hit = True
         game.field[x][y] = -1
+
+        if(ship == 1):
+            game.ship1_lives -= 1
+            if(ship1_lives == 0):
+                print('O navio' + str(ship) + ' foi destrido')
+                game.ship_count -= 1
+                play.kill = True
+
+                if(ship_count == 0):
+                    print('Seus navios foram destruídos. Você for eliminado :(')
+                    print('noob')
+
+        else:
+            game.ship2_lives -= 1
+            if(ship2_lives == 0):
+                print('O navio' + str(ship) + ' foi destrido')
+                game.ship_count -= 1
+                play.kill = True
+
+
+                if(ship_count == 0):
+                    play.dead = True
+                    print('Seus navios foram destruídos. Você foi eliminado :(')
+                    print('noob')
+
+                
 
 
 ###### CONFIGURAÇÃO DOS SOCKETS #######
@@ -235,7 +281,7 @@ else:
     #Segunda mensagem, testa conexão do anel.
     data, address = receive()
     if(data.control == True and data.x == mID - 1):
-        print('O ID da sua máquina é: ', mID)
+        print('O ID da sua máquina é: ' + str(mID))
         data.x += 1
         data.dest = next_name
         send(data)
@@ -281,8 +327,10 @@ while(True):
         if(data.token):
             token = data
             has_token = True
-            play = makePlay()
-            sendPlay(play)
+            if(game.ship_count > 0):
+                play = makePlay()
+                sendPlay(play)
+
             sendToken(token)
 
         #If message is a kill broadcast
@@ -291,6 +339,13 @@ while(True):
             x = data.x
             y = data.y
             game.players[getPlayerByID(data.dest)].ships -= 1
+
+            if(game.players[getPlayerByID(data.dest)].ships == 0):
+                game.players_left -= 1
+                if(game.players_left == 0):
+                    print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
+                    time.sleep(3)
+                    exit()
 
             if(orientation == 'h'):
                 for i in range(0, 3):
