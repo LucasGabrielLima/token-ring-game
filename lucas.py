@@ -165,7 +165,7 @@ mID = 0 # machine ID
 next_in_ring = ''
 port = 5000
 host = False
-num_players = 3
+num_players = 4
 has_token = False
 
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
@@ -188,64 +188,64 @@ if(len(sys.argv) > 1):
 
 ###########################
 
-#
-# ###### CONEXÃO COM OUTRAS MÁQUINAS; CONFIGURAÇÃO DO ANEL ##########
-#
-# print("Qual máquina você quer conectar?")
-# next_name = getnextmachine()
-# next_ip = socket.gethostbyname(next_name)
-#
-# print("A proxima máquina no anel é: " + next_name + "(" + next_ip +")")
-#
-# #############################
-#
-#
-# ####### ESTABELECE ANEL ###############
-# if(host):
-#   #Mensagem inicial
-#   message = Game.message(False, True, next_name, mID)
-#   send(message)
-#
-#   #Aguarda mensagem da última máquina
-#   data, address = receive()
-#   if(data.x != num_players - 1):
-#       print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente.')
-#       sys.exit()
-#
-#   mID = data.x + 1 #host tem mID = numero de jogadores
-#
-#   #Envia segunda mensagem, para testar conexão do anel
-#   message = Game.message(False, True, next_name, 0)
-#   send(message)
-#   data, address = receive()
-#   if(data.control == True and data.x == mID - 1):
-#       print('Configuração da conexão finalizada. O ID da sua máquina é: ', mID)
-#   else:
-#       print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
-#       sys.exit()
-#
-# else:
-#   #Primeira mensagem, seta o ID das máquinas e realiza conexão inicial do anel
-#   data, address = receive()
-#   print (address)
-#   mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
-#   data.x += 1
-#   send(data)
-#
-#   #Segunda mensagem, testa conexão do anel.
-#   data, address = receive()
-#   if(data.control == True and data.x == mID - 1):
-#       print('O ID da sua máquina é: ', mID)
-#       data.x += 1
-#       data.dest = next_name
-#       send(data)
-#   else:
-#       print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
-#       sys.exit()
-#
-# time.sleep(3)
-# #######################################
-#
+
+###### CONEXÃO COM OUTRAS MÁQUINAS; CONFIGURAÇÃO DO ANEL ##########
+
+print("Qual máquina você quer conectar?")
+next_name = getnextmachine()
+next_ip = socket.gethostbyname(next_name)
+
+print("A proxima máquina no anel é: " + next_name + "(" + next_ip +")")
+
+#############################
+
+
+####### ESTABELECE ANEL ###############
+if(host):
+    #Mensagem inicial
+    message = Game.message(False, True, next_name, mID)
+    send(message)
+
+    #Aguarda mensagem da última máquina
+    data, address = receive()
+    if(data.x != num_players - 1):
+        print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente.')
+        sys.exit()
+
+    mID = data.x + 1 #host tem mID = numero de jogadores
+
+    #Envia segunda mensagem, para testar conexão do anel
+    message = Game.message(False, True, next_name, 0)
+    send(message)
+    data, address = receive()
+    if(data.control == True and data.x == mID - 1):
+        print('Configuração da conexão finalizada. O ID da sua máquina é: ', mID)
+    else:
+        print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
+        sys.exit()
+
+else:
+    #Primeira mensagem, seta o ID das máquinas e realiza conexão inicial do anel
+    data, address = receive()
+    print (address)
+    mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
+    data.x += 1
+    send(data)
+
+    #Segunda mensagem, testa conexão do anel.
+    data, address = receive()
+    if(data.control == True and data.x == mID - 1):
+        print('O ID da sua máquina é: ', mID)
+        data.x += 1
+        data.dest = next_name
+        send(data)
+    else:
+        print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
+        sys.exit()
+
+time.sleep(3)
+#######################################
+
 ######### CONFIGURAÇÃO INICIAL DO JOGO####
 game = Game.create()
 
