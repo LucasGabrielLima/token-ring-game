@@ -8,115 +8,115 @@ import pickle
 import Game
 
 def getnextmachine():
-	machineName = raw_input()
-	validHost = False
-	while validHost == False:
-		try:
-			test = socket.gethostbyname(machineName)
-			validHost = True
-		except:
-			print('Nome de máquina inválido. Insira o nome de uma máquina conectada na rede e veja se ela está ligada.')
-			machineName = raw_input()
-	return machineName
+    machineName = raw_input()
+    validHost = False
+    while validHost == False:
+        try:
+            test = socket.gethostbyname(machineName)
+            validHost = True
+        except:
+            print('Nome de máquina inválido. Insira o nome de uma máquina conectada na rede e veja se ela está ligada.')
+            machineName = raw_input()
+    return machineName
 
 def initField():
-	field = [[0 for x in range(5)] for y in range(5)] # Inicializa uma matriz 5x5, preenchida com 0s
-	return field
+    field = [[0 for x in range(5)] for y in range(5)] # Inicializa uma matriz 5x5, preenchida com 0s
+    return field
 
 def initPlayers():
-	for i in range(num_players):
-		if(i + 1 != mID):
-			field = initField()
-			player = Game.player(field, i+1)
-			game.players.append(player)
+    for i in range(num_players):
+        if(i + 1 != mID):
+            field = initField()
+            player = Game.player(field, i+1)
+            game.players.append(player)
 
 def validxy(x, y):
     return (x < 5 and y < 5)
 
 def makePlay():
-	print('Qual o ID do jogador que você quer atacar?')
-	validID = False
-	while(validID == False):
-		player = raw_input()
-		try:
-			player = int(player)
-			validID = True
-			if(player == mID):
-				print("Tá tudo bem? Você não pode atacar a si mesmo :(")
-				validID = False
-			elif(player > num_players):
-				print("Não há nenhum jogador com este ID.")
-				validID = False
-		except:
-			print('Insira um ID válido. São aceitos números entre 1 e ' + str(num_players))
+    print('Qual o ID do jogador que você quer atacar?')
+    validID = False
+    while(validID == False):
+        player = raw_input()
+        try:
+            player = int(player)
+            validID = True
+            if(player == mID):
+                print("Tá tudo bem? Você não pode atacar a si mesmo :(")
+                validID = False
+            elif(player > num_players):
+                print("Não há nenhum jogador com este ID.")
+                validID = False
+        except:
+            print('Insira um ID válido. São aceitos números entre 1 e ' + str(num_players))
 
 
-	x, y = 5, 5
-	while(not validxy(x, y)):
-		print('Insira a coordenada de ataque no eixo X:')
-		x = raw_input()
-		print('Insira a coordenada de ataque no eixo Y:')
-		y = raw_input()
+    x, y = 5, 5
+    while(not validxy(x, y)):
+        print('Insira a coordenada de ataque no eixo X:')
+        x = raw_input()
+        print('Insira a coordenada de ataque no eixo Y:')
+        y = raw_input()
 
-		try:
-			x = int(x)
-			y = int(y)
+        try:
+            x = int(x)
+            y = int(y)
 
-		except:
-			print('Insira coordenadas válidas.')
+        except:
+            print('Insira coordenadas válidas.')
 
-	play = Game.message(False, False, player, x, y)
-	return play
+    play = Game.message(False, False, player, x, y)
+    return play
 
 
 def receive(): #Recebimento com tratamento de Timeout
-	try:
-		data, address = socketReceiver.recvfrom(1024)
-	except:
-		print('Ocorreu um timeout na conexão. Reinicie o jogo.')
-		sys.exit()
+    try:
+        data, address = socketReceiver.recvfrom(1024)
+    except:
+        print('Ocorreu um timeout na conexão. Reinicie o jogo.')
+        sys.exit()
 
-	data = pickle.loads(data)
+    data = pickle.loads(data)
 
-	try:
-		if (data.start != 'start'):
-			print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
-			sys.exit()
-	except:
-			sys.exit()
+    try:
+        if (data.start != 'start'):
+            print("Você recebeu dados de fontes desconhecidas na porta de recebimento. Por favor mude a porta e tente novamente.")
+            sys.exit()
+    except:
+            sys.exit()
 
-	return data, address
+    return data, address
 
 def send(message):
-	message = pickle.dumps(message)
-	socketSender.sendto(message, (next_ip, port))
+    message = pickle.dumps(message)
+    socketSender.sendto(message, (next_ip, port))
 
 def sendToken(token):
-	send(token)
-	has_token = False
+    send(token)
+    has_token = False
 
 def getPlayerByID(mID):
-	for i in range(len(game.players)):
-		if(game.players[i].mID == mID):
-			return i
+    for i in range(len(game.players)):
+        if(game.players[i].mID == mID):
+            return i
 
 def checkForHit(play):
-	if(play.hit == True):
-		print('Você atingiu um navio!')
-		game.players[getPlayerByID(play.dest)].field[play.x][play.y] = -1
-		return True
-	else:
-		print('Água! Você errou :(')
-		return False
+    if(play.hit == True):
+        print('Você atingiu um navio!')
+        game.players[getPlayerByID(play.dest)].field[play.x][play.y] = -1
+        return True
+    else:
+        print('Água! Você errou :(')
+        return False
 
 def checkForKill(play):
-	if(play.kill == True and play.origin == my_name):
-		orientation = play.orientation
-		x = play.x
-		y = play.y
-		game.players[getPlayerByID(play.dest)].ships -= 1
+    if(play.kill == True and play.origin == my_name):
+        orientation = play.orientation
+        x = play.x
+        y = play.y
+        game.players[getPlayerByID(play.dest)].ships -= 1
 
-	    if(orientation == 'h'):
+        if(orientation == 'h'):
             for i in range(0, 3):
                 game.players[getPlayerByID(play.dest)].field[x + i][y] = -1
 
@@ -124,37 +124,37 @@ def checkForKill(play):
             for i in range(0, 3):
                 game.players[getPlayerByID(play.dest)].field[x][y + i] = -1
 
-		message = Game.message(False, True, 'all', x, y) #Envia mensagem a todos os jogadores informando a morte de um navio
-		message.orientation = orientation
-		message.mID = play.dest
-		message.kill = True
-		send(message)
+        message = Game.message(False, True, 'all', x, y) #Envia mensagem a todos os jogadores informando a morte de um navio
+        message.orientation = orientation
+        message.mID = play.dest
+        message.kill = True
+        send(message)
 
 def sendPlay(play):
-	send(play)
+    send(play)
 
-	play, address = receive()
-	i = 0
-	while(play.seen == False and i < 3):
-		send(play)
-		i += 1
-		play, address = receive()
+    play, address = receive()
+    i = 0
+    while(play.seen == False and i < 3):
+        send(play)
+        i += 1
+        play, address = receive()
 
-	if(play.seen == False):
-		print('Ocorreu um erro na conexão. Reinicie o jogo.')
-		sys.exit()
+    if(play.seen == False):
+        print('Ocorreu um erro na conexão. Reinicie o jogo.')
+        sys.exit()
 
-	checkForHit(play)
-	checkForKill(play)
+    checkForHit(play)
+    checkForKill(play)
 
 def attacked(play):
-	play.seen = True
-	x = play.x
-	y = play.y
+    play.seen = True
+    x = play.x
+    y = play.y
 
-	if(game.field[x][y] > 0):
-		play.hit = True
-		game.field[x][y] = -1
+    if(game.field[x][y] > 0):
+        play.hit = True
+        game.field[x][y] = -1
 
 
 ###### CONFIGURAÇÃO DOS SOCKETS #######
@@ -179,12 +179,12 @@ os.system("clear")
 
 ###### TRATA ARGUMENTOS ##########
 if(len(sys.argv) > 1):
-	if(sys.argv[1] == 'h'):
-		print('Você é a primeira máquina da partida.')
-		host = True
-	else:
-		print('Argumento inválido. Use h para iniciar em modo host.')
-		sys.exit()
+    if(sys.argv[1] == 'h'):
+        print('Você é a primeira máquina da partida.')
+        host = True
+    else:
+        print('Argumento inválido. Use h para iniciar em modo host.')
+        sys.exit()
 
 ###########################
 
@@ -202,46 +202,46 @@ if(len(sys.argv) > 1):
 #
 # ####### ESTABELECE ANEL ###############
 # if(host):
-# 	#Mensagem inicial
-# 	message = Game.message(False, True, next_name, mID)
-# 	send(message)
+#   #Mensagem inicial
+#   message = Game.message(False, True, next_name, mID)
+#   send(message)
 #
-# 	#Aguarda mensagem da última máquina
-# 	data, address = receive()
-# 	if(data.x != num_players - 1):
-# 		print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente.')
-# 		sys.exit()
+#   #Aguarda mensagem da última máquina
+#   data, address = receive()
+#   if(data.x != num_players - 1):
+#       print('Ocorreu um erro na configuração no anel. A 4a e última máquina deve se conectar ao host. Tente novamente.')
+#       sys.exit()
 #
-# 	mID = data.x + 1 #host tem mID = numero de jogadores
+#   mID = data.x + 1 #host tem mID = numero de jogadores
 #
-# 	#Envia segunda mensagem, para testar conexão do anel
-# 	message = Game.message(False, True, next_name, 0)
-# 	send(message)
-# 	data, address = receive()
-# 	if(data.control == True and data.x == mID - 1):
-# 		print('Configuração da conexão finalizada. O ID da sua máquina é: ', mID)
-# 	else:
-# 		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
-# 		sys.exit()
+#   #Envia segunda mensagem, para testar conexão do anel
+#   message = Game.message(False, True, next_name, 0)
+#   send(message)
+#   data, address = receive()
+#   if(data.control == True and data.x == mID - 1):
+#       print('Configuração da conexão finalizada. O ID da sua máquina é: ', mID)
+#   else:
+#       print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
+#       sys.exit()
 #
 # else:
-# 	#Primeira mensagem, seta o ID das máquinas e realiza conexão inicial do anel
-# 	data, address = receive()
-# 	print (address)
-# 	mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
-# 	data.x += 1
-# 	send(data)
+#   #Primeira mensagem, seta o ID das máquinas e realiza conexão inicial do anel
+#   data, address = receive()
+#   print (address)
+#   mID = data.x + 1 #Campo de coordenada x é usado para transportar o ID neste momento
+#   data.x += 1
+#   send(data)
 #
-# 	#Segunda mensagem, testa conexão do anel.
-# 	data, address = receive()
-# 	if(data.control == True and data.x == mID - 1):
-# 		print('O ID da sua máquina é: ', mID)
-# 		data.x += 1
-# 		data.dest = next_name
-# 		send(data)
-# 	else:
-# 		print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
-# 		sys.exit()
+#   #Segunda mensagem, testa conexão do anel.
+#   data, address = receive()
+#   if(data.control == True and data.x == mID - 1):
+#       print('O ID da sua máquina é: ', mID)
+#       data.x += 1
+#       data.dest = next_name
+#       send(data)
+#   else:
+#       print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
+#       sys.exit()
 #
 # time.sleep(3)
 # #######################################
@@ -259,53 +259,53 @@ print('Navios posicionados com sucesso.')
 initPlayers()
 print('Campos adversários:')
 for i in range(len(game.players)):
-	print('Jogador ' + str(game.players[i].mID) + ':')
-	game.printField(game.players[i].field)
+    print('Jogador ' + str(game.players[i].mID) + ':')
+    game.printField(game.players[i].field)
 
 #######################
 
 #######CRIA TOKEN E PRIMEIRA JOGADA##########
 if(host):
-	token = Game.message(True, False, 'all')
-	has_token = True
-	play = makePlay()
-	sendPlay(play)
-	sendToken(token)
+    token = Game.message(True, False, 'all')
+    has_token = True
+    play = makePlay()
+    sendPlay(play)
+    sendToken(token)
 
 ###################
 
 while(True):
-	data, address = receive()
-	if(data.dest == mID or data.dest == 'all'):
-		#If message is token
-		if(data.token):
-			has_token = True
-			play = makePlay()
-			sendPlay(play)
-			sendToken(token)
+    data, address = receive()
+    if(data.dest == mID or data.dest == 'all'):
+        #If message is token
+        if(data.token):
+            has_token = True
+            play = makePlay()
+            sendPlay(play)
+            sendToken(token)
 
-		#If message is a kill broadcast
-		elif(data.control and data.kill):
-			orientation = data.orientation
-			x = data.x
-			y = data.y
-			game.players[getPlayerByID(data.dest)].ships -= 1
+        #If message is a kill broadcast
+        elif(data.control and data.kill):
+            orientation = data.orientation
+            x = data.x
+            y = data.y
+            game.players[getPlayerByID(data.dest)].ships -= 1
 
-		    if(orientation == 'h'):
-	            for i in range(0, 3):
-	                game.players[getPlayerByID(data.dest)].field[x + i][y] = -1
+            if(orientation == 'h'):
+                for i in range(0, 3):
+                    game.players[getPlayerByID(data.dest)].field[x + i][y] = -1
 
-	        else:
-	            for i in range(0, 3):
-	                game.players[getPlayerByID(data.dest)].field[x][y + i] = -1	
+            else:
+                for i in range(0, 3):
+                    game.players[getPlayerByID(data.dest)].field[x][y + i] = -1 
 
-	        send(data)
+            send(data)
 
-	    #If message is an atack
-	   	else:
-	   		attacked(data)
-	   		send(data)
+        #If message is an atack
+        else:
+            attacked(data)
+            send(data)
 
 
-	else: # Se a mensagem não for pra mim, manda pra frente
-		send(data)
+    else: # Se a mensagem não for pra mim, manda pra frente
+        send(data)
