@@ -219,7 +219,7 @@ if(host):
     send(message)
     data, address = receive()
     if(data.control == True and data.x == mID - 1):
-        print('Configuração da conexão finalizada. O ID da sua máquina é: ', mID)
+        print('Configuração da conexão finalizada. O ID da sua máquina é: ' + str(mID))
     else:
         print('Ocorreu um erro na configuração do anel. Mensagem de testes mal sucedida. Tente novamente.')
         sys.exit()
@@ -279,6 +279,7 @@ while(True):
     if(data.dest == mID or data.dest == 'all'):
         #If message is token
         if(data.token):
+            token = data
             has_token = True
             play = makePlay()
             sendPlay(play)
