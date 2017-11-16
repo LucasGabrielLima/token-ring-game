@@ -69,12 +69,13 @@ def makePlay():
             print('Insira coordenadas válidas.')
 
     play = Game.message(False, False, player, x, y)
+    play.attack = True
     return play
 
 
 def receive(): #Recebimento com tratamento de Timeout
     try:
-        data, address = socketReceiver.recvfrom(1024)
+        data, address = socketReceiver.recvfrom(2048)
     except:
         print('Ocorreu um timeout na conexão. Reinicie o jogo.')
         sys.exit()
@@ -136,12 +137,6 @@ def checkForKill(play):
             for i in range(0, 3):
                 game.players[getPlayerByID(play.dest)].field[x][y + i] = -1
 
-        game.players_left -= 1
-        if(game.players_left == 0):
-            print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
-            time.sleep(3)
-            exit()
-
         message = Game.message(False, True, 'all', x, y) #Envia mensagem a todos os jogadores informando a morte de um navio
         message.orientation = orientation
         message.player = dest
@@ -174,9 +169,9 @@ def attacked(play):
     print('Você foi atacado na posição (' + str(x) + ', ' + str(y) + ').')
 
     if(game.field[x][y] > 0):
+        play.hit = True
         ship = game.field[x][y]
         print('O navio ' + str(ship) + ' foi atingido.')
-        play.hit = True
         game.field[x][y] = -1
 
         if(ship == 1):
@@ -339,7 +334,7 @@ while(True):
             sendToken(token)
 
         #If message is a kill broadcast
-        elif(data.control and data.kill and data.player != mID):
+        elif(data.control and data.kill and data.player != mID and data.origin != my_name):
             orientation = data.orientation
             x = data.x
             y = data.y
@@ -360,7 +355,7 @@ while(True):
             send(data)
 
         #If message is an atack
-        else:
+        elif(data.attack == True):
             attacked(data)
             send(data)
 

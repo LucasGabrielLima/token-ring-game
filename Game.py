@@ -7,6 +7,7 @@ class message (object):
         self.start = "start"
         self.token = token
         self.control = control
+        self.attack = False
         self.origin = socket.gethostname()
         self.dest = dest
         self.x = x
