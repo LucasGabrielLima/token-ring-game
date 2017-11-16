@@ -178,24 +178,24 @@ def attacked(play):
 
         if(ship == 1):
             game.ship1_lives -= 1
-            if(ship1_lives == 0):
+            if(game.ship1_lives == 0):
                 print('O navio' + str(ship) + ' foi destrido')
                 game.ship_count -= 1
                 play.kill = True
 
-                if(ship_count == 0):
+                if(game.ship_count == 0):
                     print('Seus navios foram destruídos. Você for eliminado :(')
                     print('noob')
 
         else:
             game.ship2_lives -= 1
-            if(ship2_lives == 0):
+            if(game.ship2_lives == 0):
                 print('O navio' + str(ship) + ' foi destrido')
                 game.ship_count -= 1
                 play.kill = True
 
 
-                if(ship_count == 0):
+                if(game.ship_count == 0):
                     play.dead = True
                     print('Seus navios foram destruídos. Você foi eliminado :(')
                     print('noob')
