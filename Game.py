@@ -90,12 +90,17 @@ class create(object):
                 if(inbounds):
                     for i in range(0, 3):
                         self.field[x][y + i] = self.ship_count
-            self.ship1x = x
-            self.ship1y = y
-            self.ship2x = x
-            self.ship2y = y
+
+            if(self.ship_count == 1):
+                self.ship1x = x
+                self.ship1y = y
+
+            else:
+                self.ship2x = x
+                self.ship2y = y
 
 
+    #Imprime campo passado como paramametro. Se o parametro for omitido, imprime o campo do próprio jogador.
     def printField(self, f = 'default'):
         if(f == 'default'):
             f = self.field

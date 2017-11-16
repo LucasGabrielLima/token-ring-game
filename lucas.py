@@ -185,7 +185,7 @@ def attacked(play):
                 play.y = game.ship1y
 
                 if(game.ship_count == 0):
-                    print('Seus navios foram destruídos. Você for eliminado :(')
+                    print('Seus navios foram destruídos. Você foi eliminado :(')
                     print('noob')
 
         else:
@@ -204,7 +204,19 @@ def attacked(play):
                     print('Seus navios foram destruídos. Você foi eliminado :(')
                     print('noob')
 
-                
+        printGame()
+
+
+def printGame():
+    print('Seu ID é: ' + str(mID))
+    game.printField()
+    print('')
+
+    print('Campos adversários:')
+    for i in range(len(game.players)):
+        print('Jogador ' + str(game.players[i].mID) + ':')
+        game.printField(game.players[i].field)
+
 
 
 ###### CONFIGURAÇÃO DOS SOCKETS #######
@@ -320,6 +332,7 @@ if(host):
     has_token = True
     play = makePlay()
     sendPlay(play)
+    printGame()
     sendToken(token)
 
 ###################
@@ -334,6 +347,7 @@ while(True):
             if(game.ship_count > 0):
                 play = makePlay()
                 sendPlay(play)
+                printGame()
 
             sendToken(token)
 
@@ -356,6 +370,7 @@ while(True):
                 for i in range(0, 3):
                     game.players[getPlayerByID(data.player)].field[x][y + i] = -1 
 
+            printGame()
             send(data)
 
         #If message is an atack
