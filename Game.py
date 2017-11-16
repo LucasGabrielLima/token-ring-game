@@ -52,6 +52,10 @@ class create(object):
                 print('Insira coordenadas válidas.')
 
 
+            if(self.ship_count == 1):
+                self.ship1_orientation = orientation
+            else:
+                self.ship2_orientation = orientation
             if(orientation == 'h'):
                 inbounds = True
                 try:

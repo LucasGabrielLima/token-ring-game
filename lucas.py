@@ -179,7 +179,7 @@ def attacked(play):
         if(ship == 1):
             game.ship1_lives -= 1
             if(game.ship1_lives == 0):
-                print('O navio ' + str(ship) + ' foi destrido')
+                print('O navio ' + str(ship) + ' foi destruido')
                 game.ship_count -= 1
                 play.kill = True
                 play.orientation = game.ship1_orientation
@@ -340,9 +340,9 @@ while(True):
             orientation = data.orientation
             x = data.x
             y = data.y
-            game.players[getPlayerByID(data.dest)].ships -= 1
+            game.players[getPlayerByID(data.dest)].ships_count -= 1
 
-            if(game.players[getPlayerByID(data.dest)].ships == 0):
+            if(game.players[getPlayerByID(data.dest)].ships_count == 0):
                 game.players_left -= 1
                 if(game.players_left == 0):
                     print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
