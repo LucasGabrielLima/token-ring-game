@@ -342,9 +342,9 @@ while(True):
             orientation = data.orientation
             x = data.x
             y = data.y
-            game.players[getPlayerByID(data.player)].ships_count -= 1
+            game.players[getPlayerByID(data.player)].ship_count -= 1
 
-            if(game.players[getPlayerByID(data.player)].ships_count == 0):
+            if(game.players[getPlayerByID(data.player)].ship_count == 0):
                 game.players_left -= 1
                 if(game.players_left == 0):
                     print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
