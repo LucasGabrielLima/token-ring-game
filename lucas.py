@@ -182,6 +182,7 @@ def attacked(play):
                 print('O navio' + str(ship) + ' foi destrido')
                 game.ship_count -= 1
                 play.kill = True
+                play.orientation = game.ship1_orientation
 
                 if(game.ship_count == 0):
                     print('Seus navios foram destruídos. Você for eliminado :(')
@@ -193,6 +194,7 @@ def attacked(play):
                 print('O navio' + str(ship) + ' foi destrido')
                 game.ship_count -= 1
                 play.kill = True
+                play.orientation = game.ship2_orientation
 
 
                 if(game.ship_count == 0):
