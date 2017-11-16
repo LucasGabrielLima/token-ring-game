@@ -29,6 +29,7 @@ def initPlayers():
         if(i + 1 != mID):
             field = initField()
             player = Game.player(field, i+1)
+            player.ship_count = 2
             game.players.append(player)
             game.players_left += 1
 
@@ -338,7 +339,7 @@ while(True):
             sendToken(token)
 
         #If message is a kill broadcast
-        elif(data.control and data.kill):
+        elif(data.control and data.kill and data.player != mID):
             orientation = data.orientation
             x = data.x
             y = data.y
@@ -346,10 +347,7 @@ while(True):
 
             if(game.players[getPlayerByID(data.player)].ship_count == 0):
                 game.players_left -= 1
-                if(game.players_left == 0):
-                    print('Você venceU!!! Parabéns!!! Uhul!!! VAMO DALEEEE!!!')
-                    time.sleep(3)
-                    exit()
+                print('O jogador ' + str(data.player) + ' foi eliminado.' )
 
             if(orientation == 'h'):
                 for i in range(0, 3):
