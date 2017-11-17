@@ -147,7 +147,7 @@ def checkForKill(play):
 def sendPlay(play):
     send(play)
 
-	socket.settimeout(5) # Seta o timeout da mensagem
+    socket.settimeout(5) # Seta o timeout da mensagem
     play, address = receive()
     i = 0
     while(play.seen == False and i < 3):
@@ -159,7 +159,7 @@ def sendPlay(play):
         print('Ocorreu um erro na conexão. Reinicie o jogo.')
         sys.exit()
 
-	socket.settimeout(None) # Retira o timeout para que ele não ocorra enquanto a vez dos outros jogadores
+        socket.settimeout(None) # Retira o timeout para que ele não ocorra enquanto a vez dos outros jogadores
 
     checkForHit(play)
     checkForKill(play)
