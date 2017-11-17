@@ -159,7 +159,6 @@ def sendPlay(play):
         print('Ocorreu um erro na conexão. Reinicie o jogo.')
         sys.exit()
 
-
 	socket.settimeout(None) # Retira o timeout para que ele não ocorra enquanto a vez dos outros jogadores
 
     checkForHit(play)
