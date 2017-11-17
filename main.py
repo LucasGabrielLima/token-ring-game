@@ -373,7 +373,7 @@ while(True):
 
             if(game.players[getPlayerByID(data.player)].ship_count == 0):
                 game.players_left -= 1
-                print('O jogador ' + str(data.player) + ' foi eliminado.' )        
+                print('O jogador ' + str(data.player) + ' foi eliminado.' )
 
             printGame()
             send(data)
