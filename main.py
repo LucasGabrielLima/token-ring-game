@@ -231,7 +231,7 @@ mID = 0 # machine ID
 next_in_ring = ''
 port = 5005
 host = False
-num_players = 4
+num_players = 3
 has_token = False
 
 socketSender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) #socket para enviar dados
